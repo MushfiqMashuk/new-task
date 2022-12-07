@@ -1,5 +1,10 @@
+import Layout from "../components/Layout";
 import styles from "./home.module.scss";
 
 export default function Home() {
-  return <div className={styles.container}>Hello</div>;
+  return (
+    <Layout>
+      <div className={styles.container}>Hello</div>
+    </Layout>
+  );
 }
