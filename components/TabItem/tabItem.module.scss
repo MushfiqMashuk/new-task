@@ -1,5 +1,6 @@
 @import "../../styles/Mixins";
 
-.body {
+.container {
   @include center_element;
+  cursor: pointer;
 }

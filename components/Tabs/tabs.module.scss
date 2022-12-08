@@ -1,0 +1,31 @@
+@import "../../styles/Mixins";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 60vw;
+  height: 100vh;
+  gap: 2rem;
+
+  .title_container {
+    width: 100%;
+    @include center_element;
+  }
+
+  .tabs_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: rgb(231, 231, 225);
+    padding: 0.7rem;
+  }
+
+  .tabs_content {
+    @include center_element;
+    background-color: bisque;
+    width: 100%;
+  }
+}
