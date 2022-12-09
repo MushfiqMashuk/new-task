@@ -4,6 +4,12 @@ import ModalTitle from "../ModalTitle";
 import styles from "./modal.module.scss";
 
 const Modal = ({ onClose, children = null, title = "Hello There" }) => {
+  useEffect(() => {
+    // preventing the UI from scrolling while the modal is open
+    document.body.classList.add(styles.overflow_hidden);
+
+    return () => document.body.classList.remove(styles.overflow_hidden);
+  });
 
   return (
     <Portal>
