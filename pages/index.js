@@ -7,8 +7,12 @@ export default function Home() {
     <Layout>
       <div className={styles.container}>
         <Tabs>
-          <div label="Admin">I am an admin</div>
-          <div label="Employee">I am an employee</div>
+          <div label="Admin" onClick={() => console.log("Nice")}>
+            I am an admin
+          </div>
+          <div label="Employee" onClick={() => console.log("Nice")}>
+            I am an employee
+          </div>
         </Tabs>
       </div>
     </Layout>

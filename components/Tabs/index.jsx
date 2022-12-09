@@ -16,10 +16,20 @@ const Tabs = ({ children, title = "Tab Element" }) => {
       </div>
       <div className={styles.tabs_container}>
         {children.map((element, i) => {
-          const { label,  } = element.props;
+          const { label, onClick } = element.props;
+
+          console.log(element);
 
           return (
-            <TabItem key={i} handleOnClick={handleActive} label={label}>
+            <TabItem
+              key={i}
+              handleOnClick={onClick ? (tab) => {
+                handleActive(tab);
+                onClick();
+              } : handleActive}
+              label={label}
+              activeTab={activeTab}
+            >
               {label}
             </TabItem>
           );

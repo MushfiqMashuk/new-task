@@ -20,7 +20,11 @@
     align-items: center;
     justify-content: space-around;
     background-color: rgb(231, 231, 225);
-    padding: 0.7rem;
+
+    // & div:not(:last-child) {
+    //   border-right: 0.2rem solid rgb(190, 190, 192);
+    // }
+    //padding: 0.7rem;
   }
 
   .tabs_content {
