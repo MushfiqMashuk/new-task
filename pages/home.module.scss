@@ -1,0 +1,20 @@
+@import "../styles/Mixins";
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .add_user {
+    @include center_element;
+    .add_button {
+      padding: 0.6rem 2rem;
+      cursor: pointer;
+    }
+  }
+
+  .pagination_bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
