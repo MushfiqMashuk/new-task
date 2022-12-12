@@ -31,17 +31,19 @@ thead tr th {
   background-color: #fafafa;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #fafafa;
+tbody tr {
+  &:nth-child(even) {
+    background-color: #fafafa;
+  }
+  &:hover {
+    background-color: rgba(240, 205, 209, 0.511);
+  }
 }
 
 th,
 td {
   padding: 8px;
   overflow-wrap: break-word;
-   &:hover {
-    background-color: rgb(218, 245, 245);
-   }
 }
 
 @media (prefers-color-scheme: dark) {

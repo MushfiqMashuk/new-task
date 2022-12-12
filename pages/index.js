@@ -36,6 +36,7 @@ export default function Home({ admin }) {
                     <th>FIRST NAME</th>
                     <th>LAST NAME</th>
                     <th>USER TYPE</th>
+                    <th>DETAILS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -46,7 +47,9 @@ export default function Home({ admin }) {
                         <td>{item.first_name}</td>
                         <td>{item.last_name}</td>
                         <td>{item.user_type}</td>
-                        <button>Details</button>
+                        <td>
+                          <button>Details</button>
+                        </td>
                       </tr>
                     );
                   })}
