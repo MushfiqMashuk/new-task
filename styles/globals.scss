@@ -19,6 +19,31 @@ a {
   border-bottom: 0.25rem solid rgb(22, 91, 228);
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  position: relative;
+}
+
+thead tr th {
+  font-weight: 500;
+  text-align: left;
+  background-color: #fafafa;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+th,
+td {
+  padding: 8px;
+  overflow-wrap: break-word;
+   &:hover {
+    background-color: rgb(218, 245, 245);
+   }
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

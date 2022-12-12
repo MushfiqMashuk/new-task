@@ -3,7 +3,7 @@ import TabItem from "../TabItem";
 import styles from "./tabs.module.scss";
 
 const Tabs = ({ children, title = "Tab Element" }) => {
-  const [activeTab, setActiveTab] = useState();
+  const [activeTab, setActiveTab] = useState("Admin");
 
   const handleActive = (tab) => {
     setActiveTab(tab);
@@ -17,8 +17,6 @@ const Tabs = ({ children, title = "Tab Element" }) => {
       <div className={styles.tabs_container}>
         {children.map((element, i) => {
           const { label, onClick } = element.props;
-
-          console.log(element);
 
           return (
             <TabItem
