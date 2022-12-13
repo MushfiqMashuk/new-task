@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import Modal from "../components/Modal";
 import Tabs from "../components/Tabs";
 import styles from "./home.module.scss";
+import Link from "next/link";
 
 export default function Home({ admin }) {
   const [showModal, setShowModal] = useState(false);
@@ -43,12 +44,14 @@ export default function Home({ admin }) {
                   {adminData.map((item) => {
                     return (
                       <tr>
-                        <td>{item.id}</td>
-                        <td>{item.first_name}</td>
-                        <td>{item.last_name}</td>
-                        <td>{item.user_type}</td>
+                        <td>{item?.id}</td>
+                        <td>{item?.first_name}</td>
+                        <td>{item?.last_name}</td>
+                        <td>{item?.user_type}</td>
                         <td>
-                          <button>Details</button>
+                          <Link href={`/user/${item?.id}`}>
+                            <a>Details</a>
+                          </Link>
                         </td>
                       </tr>
                     );
@@ -92,7 +95,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      admin: data,
+      admin: data.slice(0, 5),
     },
     revalidate: 60,
   };
