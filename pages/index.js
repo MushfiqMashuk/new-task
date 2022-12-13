@@ -36,7 +36,7 @@ export default function Home({ admin }) {
                     <th>FIRST NAME</th>
                     <th>LAST NAME</th>
                     <th>USER TYPE</th>
-                    <th>DETAILS</th>
+                    <th>ACTION</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -83,7 +83,8 @@ export async function getStaticProps() {
     console.log(err);
   }
 
-  if (!data[0].id) {
+  // If the data is not found, we are showing 404 page by returning notFound = true
+  if (!data[0]?.id) {
     return {
       notFound: true,
     };
