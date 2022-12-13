@@ -1,15 +1,22 @@
-import { useState } from "react";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
+import Pagination from "../components/Pagination";
 import Tabs from "../components/Tabs";
 import styles from "./home.module.scss";
-import Link from "next/link";
 
 export default function Home({ admin }) {
+  let PageSize = 5;
   const [showModal, setShowModal] = useState(false);
   const [adminData, setAdminData] = useState(admin);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  console.log(admin);
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return adminData?.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage]);
 
   return (
     <Layout>
@@ -41,7 +48,7 @@ export default function Home({ admin }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {adminData.map((item) => {
+                  {currentTableData?.map((item) => {
                     return (
                       <tr>
                         <td>{item?.id}</td>
@@ -64,6 +71,13 @@ export default function Home({ admin }) {
             I am an employee
           </div>
         </Tabs>
+        <Pagination
+          className={styles.pagination_bar}
+          currentPage={currentPage}
+          totalCount={adminData?.length}
+          pageSize={PageSize}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </Layout>
   );
@@ -95,7 +109,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      admin: data.slice(0, 5),
+      admin: data,
     },
     revalidate: 60,
   };
