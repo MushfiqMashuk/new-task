@@ -15,6 +15,10 @@ export default function Home({ admin }) {
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
+
+    // 'limit' & 'page' query parameters of the given api doesn't work.
+    // So I had to paginate manually. 
+
     return adminData?.slice(firstPageIndex, lastPageIndex);
   }, [currentPage]);
 
@@ -50,7 +54,7 @@ export default function Home({ admin }) {
                 <tbody>
                   {currentTableData?.map((item) => {
                     return (
-                      <tr>
+                      <tr key={item?.id}>
                         <td>{item?.id}</td>
                         <td>{item?.first_name}</td>
                         <td>{item?.last_name}</td>

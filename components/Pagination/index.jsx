@@ -1,3 +1,4 @@
+import randomNumber from "../../helpers/genRandomNumber";
 import { DOTS, usePagination } from "../../hooks/usePagination";
 import styles from "./pagination.module.scss";
 const Pagination = (props) => {
@@ -46,7 +47,10 @@ const Pagination = (props) => {
         // If the pageItem is a DOT, render the DOTS unicode character
         if (pageNumber === DOTS) {
           return (
-            <li className={`${styles.pagination_item} ${styles.dots}`}>
+            <li
+              className={`${styles.pagination_item} ${styles.dots}`}
+              key={randomNumber(Date.now())}
+            >
               &#8230;
             </li>
           );
@@ -59,6 +63,7 @@ const Pagination = (props) => {
               pageNumber === currentPage ? `${styles.selected}` : ""
             }`}
             onClick={() => onPageChange(pageNumber)}
+            key={randomNumber(Date.now())}
           >
             {pageNumber}
           </li>
