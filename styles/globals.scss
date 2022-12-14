@@ -1,3 +1,5 @@
+@import "./Variables";
+
 html,
 body {
   padding: 0;
@@ -17,6 +19,13 @@ a {
 
 .active_tab {
   border-bottom: 0.25rem solid rgb(22, 91, 228);
+}
+
+/* Top progress bar design */
+#nprogress .bar {
+  height: $top_loader_height;
+  background: $top_loader_color;
+  z-index: $progress_bar_z_index;
 }
 
 table {

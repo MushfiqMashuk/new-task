@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
@@ -25,6 +25,12 @@ export default function Home({ admin, employee }) {
       ? adminData?.slice(firstPageIndex, lastPageIndex)
       : employeeData?.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, selectedTab]);
+
+
+  // Prevents the ui not remain on the same page when we toggle between tabs 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedTab]);
 
   const handleClick = (user) => {
     setSelectedTab(user);
