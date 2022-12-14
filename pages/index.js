@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Form from "../components/Form";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
@@ -17,13 +18,10 @@ export default function Home({ admin, employee }) {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(addAdmin(admin));
-  //   dispatch(addEmployee(employee));
-  // }, []);
-
-  dispatch(addAdmin(admin));
-  dispatch(addEmployee(employee));
+  useEffect(() => {
+    dispatch(addAdmin(admin));
+    dispatch(addEmployee(employee));
+  }, [admin, employee]);
 
   const adminUsers = useSelector((state) => state.admin.users);
   const employeeUsers = useSelector((state) => state.employee.users);
@@ -38,7 +36,7 @@ export default function Home({ admin, employee }) {
     return selectedTab?.toLowerCase() === "admin"
       ? adminUsers?.slice(firstPageIndex, lastPageIndex)
       : employeeUsers?.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, selectedTab]);
+  }, [currentPage, selectedTab, adminUsers, employeeUsers]);
 
   // Prevents the ui not remain on the same page when we toggle between tabs
   useEffect(() => {
@@ -54,7 +52,7 @@ export default function Home({ admin, employee }) {
       <div className={styles.container}>
         {showModal && (
           <Modal title="Add new user" onClose={() => setShowModal(false)}>
-            Nice looing Kid
+            <Form onClose={() => setShowModal(false)} />
           </Modal>
         )}
         <div className={styles.add_user}>
