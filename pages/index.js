@@ -6,21 +6,29 @@ import Pagination from "../components/Pagination";
 import Tabs from "../components/Tabs";
 import styles from "./home.module.scss";
 
-export default function Home({ admin }) {
+export default function Home({ admin, employee }) {
   let PageSize = 5;
   const [showModal, setShowModal] = useState(false);
   const [adminData, setAdminData] = useState(admin);
+  const [employeeData, setmEployeeData] = useState(employee);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTab, setSelectedTab] = useState("Admin");
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
 
     // 'limit' & 'page' query parameters of the given api doesn't work.
-    // So I had to paginate manually. 
+    // So I had to paginate manually.
 
-    return adminData?.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+    return selectedTab?.toLowerCase() === "admin"
+      ? adminData?.slice(firstPageIndex, lastPageIndex)
+      : employeeData?.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, selectedTab]);
+
+  const handleClick = (user) => {
+    setSelectedTab(user);
+  };
 
   return (
     <Layout>
@@ -39,7 +47,7 @@ export default function Home({ admin }) {
           </button>
         </div>
         <Tabs title="User Info">
-          <div label="Admin" onClick={() => console.log("Nice")}>
+          <div label="Admin" onClick={() => handleClick("admin")}>
             {adminData && (
               <table>
                 <thead>
@@ -71,14 +79,47 @@ export default function Home({ admin }) {
               </table>
             )}
           </div>
-          <div label="Employee" onClick={() => console.log("Nice")}>
-            I am an employee
+          <div label="Employee" onClick={() => handleClick("employee")}>
+            {employeeData && (
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>FIRST NAME</th>
+                    <th>LAST NAME</th>
+                    <th>USER TYPE</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentTableData?.map((item) => {
+                    return (
+                      <tr key={item?.id}>
+                        <td>{item?.id}</td>
+                        <td>{item?.first_name}</td>
+                        <td>{item?.last_name}</td>
+                        <td>{item?.user_type}</td>
+                        <td>
+                          <Link href={`/user/${item?.id}`}>
+                            <a>Details</a>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </Tabs>
         <Pagination
           className={styles.pagination_bar}
           currentPage={currentPage}
-          totalCount={adminData?.length}
+          totalCount={
+            selectedTab.toLowerCase() === "admin"
+              ? adminData?.length
+              : employeeData?.length
+          }
           pageSize={PageSize}
           onPageChange={(page) => setCurrentPage(page)}
         />
@@ -88,15 +129,21 @@ export default function Home({ admin }) {
 }
 
 export async function getStaticProps() {
-  let data;
+  let admin;
+  let employee;
 
   try {
-    const response = await fetch(
+    const adminResponse = await fetch(
       `${process.env.NEXT_PUBLIC_USERS_API}?user_type=admin`
     );
 
-    if (response.ok) {
-      data = await response.json();
+    const employeeResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_USERS_API}?user_type=employee`
+    );
+
+    if (adminResponse.ok && employeeResponse.ok) {
+      admin = await adminResponse.json();
+      employee = await employeeResponse.json();
     } else {
       throw Error("Internal Server Error!");
     }
@@ -105,7 +152,7 @@ export async function getStaticProps() {
   }
 
   // If the data is not found, we are showing 404 page by returning notFound = true
-  if (!data[0]?.id) {
+  if (!admin[0]?.id) {
     return {
       notFound: true,
     };
@@ -113,7 +160,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      admin: data,
+      admin,
+      employee,
     },
     revalidate: 60,
   };
