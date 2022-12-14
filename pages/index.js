@@ -1,18 +1,32 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
 import Tabs from "../components/Tabs";
+import { addUser as addAdmin } from "../redux/adminSlice";
+import { addUser as addEmployee } from "../redux/employeeSlice";
 import styles from "./home.module.scss";
 
 export default function Home({ admin, employee }) {
   let PageSize = 5;
   const [showModal, setShowModal] = useState(false);
-  const [adminData, setAdminData] = useState(admin);
-  const [employeeData, setmEployeeData] = useState(employee);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTab, setSelectedTab] = useState("Admin");
+
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(addAdmin(admin));
+  //   dispatch(addEmployee(employee));
+  // }, []);
+
+  dispatch(addAdmin(admin));
+  dispatch(addEmployee(employee));
+
+  const adminUsers = useSelector((state) => state.admin.users);
+  const employeeUsers = useSelector((state) => state.employee.users);
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
@@ -22,12 +36,11 @@ export default function Home({ admin, employee }) {
     // So I had to paginate manually.
 
     return selectedTab?.toLowerCase() === "admin"
-      ? adminData?.slice(firstPageIndex, lastPageIndex)
-      : employeeData?.slice(firstPageIndex, lastPageIndex);
+      ? adminUsers?.slice(firstPageIndex, lastPageIndex)
+      : employeeUsers?.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, selectedTab]);
 
-
-  // Prevents the ui not remain on the same page when we toggle between tabs 
+  // Prevents the ui not remain on the same page when we toggle between tabs
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedTab]);
@@ -54,7 +67,7 @@ export default function Home({ admin, employee }) {
         </div>
         <Tabs title="User Info">
           <div label="Admin" onClick={() => handleClick("admin")}>
-            {adminData && (
+            {adminUsers && (
               <table>
                 <thead>
                   <tr>
@@ -86,7 +99,7 @@ export default function Home({ admin, employee }) {
             )}
           </div>
           <div label="Employee" onClick={() => handleClick("employee")}>
-            {employeeData && (
+            {employeeUsers && (
               <table>
                 <thead>
                   <tr>
@@ -123,8 +136,8 @@ export default function Home({ admin, employee }) {
           currentPage={currentPage}
           totalCount={
             selectedTab.toLowerCase() === "admin"
-              ? adminData?.length
-              : employeeData?.length
+              ? adminUsers?.length
+              : employeeUsers?.length
           }
           pageSize={PageSize}
           onPageChange={(page) => setCurrentPage(page)}
